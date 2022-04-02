@@ -78,9 +78,16 @@ class _FeaturedState extends State<Featured> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: CustomText(
-                                text: productProvider.products[index].name ??
-                                    "id null",
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  productProvider.products[index].name ??
+                                      "id null",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: black,
+                                      fontWeight: FontWeight.normal),
+                                ),
                               ),
                             ),
                             Padding(
@@ -140,7 +147,7 @@ class _FeaturedState extends State<Featured> {
                               padding: const EdgeInsets.only(right: 8.0),
                               child: CustomText(
                                 text:
-                                    "\$${productProvider.products[index].price / 100}",
+                                    "${int.parse(productProvider.products[index].price) / 100} OMR",
                                 weight: FontWeight.bold,
                               ),
                             ),

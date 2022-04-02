@@ -67,7 +67,7 @@ class _DetailsState extends State<Details> {
                       size: 26,
                       weight: FontWeight.bold),
                   CustomText(
-                      text: "\$${widget.product.price / 100}",
+                      text: "${int.parse(widget.product.price) / 100} OMR",
                       size: 20,
                       weight: FontWeight.w400),
                   SizedBox(
@@ -111,7 +111,7 @@ class _DetailsState extends State<Details> {
                           print("All set loading");
 
                           bool value = await user.addToCard(
-                              product: widget.product, quantity: quantity);
+                              product: widget.product, quantity: quantity,context:context);
                           if (value) {
                             print("Item added to cart");
                             _key.currentState.showSnackBar(

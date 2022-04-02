@@ -20,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<ScaffoldState>();
 
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<UserProvider>(context);
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset("images/logo.png", width: 120, height: 120,),
+                Image.asset("images/ff.PNG", width: 120, height: 120,),
               ],
             ),
 
@@ -76,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(padding: EdgeInsets.only(left: 10),
                   child: TextFormField(
                     controller: authProvider.password,
+                    obscureText: true,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Password",
@@ -94,8 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                     return;
                   }
-                  categoryProvider.loadCategories();
-                  restaurantProvider.loadSingleRestaurant();
+
+                  categoryProvider.loadCategories(); //done
+                  restaurantProvider.loadRestaurants();
                   productProvider.loadProducts();
                   authProvider.clearController();
                   changeScreenReplacement(context, Home());

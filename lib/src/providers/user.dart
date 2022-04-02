@@ -11,6 +11,8 @@ import 'package:foodapplication/src/models/products.dart';
 import 'package:foodapplication/src/models/user.dart';
 import 'package:uuid/uuid.dart';
 
+import '../helpers/shared_prefrences_helper.dart';
+
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
 class UserProvider with ChangeNotifier {
@@ -21,6 +23,8 @@ class UserProvider with ChangeNotifier {
   UserServices _userServicse = UserServices();
   OrderServices _orderServices = OrderServices();
   UserModel _userModel;
+  int total = 0;
+  List<CartItemModel> myCart = [] ;
 
 //  getter
   UserModel get userModel => _userModel;
@@ -29,6 +33,11 @@ class UserProvider with ChangeNotifier {
 
   // public variables
   List<OrderModel> orders = [];
+
+  void changeTotal(num value){
+    total+=value;
+    // notifyListeners();
+  }
 
   final formkey = GlobalKey<FormState>();
 
@@ -45,7 +54,15 @@ class UserProvider with ChangeNotifier {
       _status = Status.Authenticating;
       notifyListeners();
       await _auth.signInWithEmailAndPassword(
-          email: email.text.trim(), password: password.text.trim());
+          email: email.text.trim(), password: password.text.trim()).then((value) {
+            print(value.user.uid);
+        SharedPrefrencesHelper.sharedPrefrencesHelper.setData("token", value.user.uid);
+            _firestore.collection('users').doc(value.user.uid).get().then((value){
+              SharedPrefrencesHelper.sharedPrefrencesHelper.setData("name", value.data()['name']);
+              SharedPrefrencesHelper.sharedPrefrencesHelper.setData("email", value.data()['email']);
+            });
+
+      });
       return true;
     } catch (e) {
       _status = Status.Unauthenticated;
@@ -63,12 +80,17 @@ class UserProvider with ChangeNotifier {
           .createUserWithEmailAndPassword(
               email: email.text.trim(), password: password.text.trim())
           .then((result) {
+            print(result.user.email);
         _firestore.collection('users').doc(result.user.uid).set({
           'name': name.text,
           'email': email.text,
           'uid': result.user.uid,
           "likedFood": [],
           "likedRestaurants": []
+        }).then((value) {
+          SharedPrefrencesHelper.sharedPrefrencesHelper.setData("token", result.user.uid);
+          SharedPrefrencesHelper.sharedPrefrencesHelper.setData("name", name.text);
+          SharedPrefrencesHelper.sharedPrefrencesHelper.setData("email", email.text);
         });
       });
       return true;
@@ -109,29 +131,39 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addToCard({ProductModel product, int quantity}) async {
+  Future<bool> addToCard({ProductModel product, int quantity,context}) async {
     print("THE PRODUC IS: ${product.toString()}");
     print("THE qty IS: ${quantity.toString()}");
-
     try {
-      var uuid = Uuid();
-      String cartItemId = uuid.v4();
-      List cart = _userModel.cart;
+      // var uuid = Uuid();
+      // String cartItemId = uuid.v4();
+      // List cart = _userModel.cart;
 //      bool itemExists = false;
-      Map cartItem = {
-        "id": cartItemId,
+
+      DocumentReference ref = await _firestore.collection("cart").doc();
+      Map<String,dynamic> cartItem = {
+        "id": ref.id,
         "name": product.name,
         "image": product.image,
         "restaurantId": product.restaurantId,
-        "totalRestaurantSale": product.price * quantity,
+        "totalRestaurantSale": int.parse(product.price) * quantity,
         "productId": product.id,
         "price": product.price,
-        "quantity": quantity
-      };
+        "quantity": quantity,
+        "userId": SharedPrefrencesHelper.sharedPrefrencesHelper.getData("token")
+    };
+      print("ewprk ${cartItem}");
+      var price = int.parse(cartItem['price'])*cartItem['quantity'];
+      changeTotal(price);
+      // CartItemModel item = CartItemModel.(cartItem);
+    ref.set(cartItem).then((value) => true);
 
-      CartItemModel item = CartItemModel.fromMap(cartItem);
+
+
+      return true;
+      // CartItemModel item = CartItemModel.fromMap(cartItem);
 //      if(!itemExists){
-      print("CART ITEMS ARE: ${cart.toString()}");
+//       print("CART ITEMS ARE: ${cart.toString()}");
      // _userServicse.addToCart(userId: _user.uid, cartItem: item);
 //      }
 
@@ -143,7 +175,8 @@ class UserProvider with ChangeNotifier {
   }
 
   getOrders() async {
-   // orders = await _orderServices.getUserOrders(userId: _user.uid);
+   orders = await _orderServices.getUserOrders();
+
     notifyListeners();
   }
 
@@ -151,7 +184,7 @@ class UserProvider with ChangeNotifier {
     print("THE PRODUC IS: ${cartItem.toString()}");
 
     try {
-     // _userServicse.removeFromCart(userId: _user.uid, cartItem: cartItem);
+     _userServicse.removeFromCart(cartItem: cartItem);
       return true;
     } catch (e) {
       print("THE ERROR ${e.toString()}");

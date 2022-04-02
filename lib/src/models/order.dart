@@ -30,14 +30,14 @@ class OrderModel {
   // public variable
   List cart;
 
-  OrderModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) {
-    _id = snapshot.data()['ID'];
-    _description = snapshot.data()['DESCRIPTION'];
-    _total = snapshot.data()['TOTAL'];
-    _status = snapshot.data()['STATUS'];
-    _userId = snapshot.data()['USER_ID'];
-    _createdAt = snapshot.data()['CREATED_AT'];
-    _restaurantId = snapshot.data()['RESTAURANT_ID'];
-    cart = snapshot.data()['CART'];
+  OrderModel.fromSnapshot(dynamic snapshot) {
+    _id = snapshot[ID];
+    _description = snapshot[DESCRIPTION];
+    _total = snapshot[TOTAL];
+    _status = snapshot[STATUS];
+    _userId = snapshot[USER_ID];
+    _createdAt = snapshot[CREATED_AT];
+    _restaurantId = snapshot[RESTAURANT_ID];
+    cart = snapshot[CART];
   }
 }

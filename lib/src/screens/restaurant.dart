@@ -89,7 +89,7 @@ class RestaurantScreen extends StatelessWidget {
                   child: Align(
                       alignment: Alignment.bottomCenter,
                       child: CustomText(
-                        text: "Average Price: \$" +
+                        text: "Average Price: OMR" +
                             restaurantModel.avgPrice.toString(),
                         color: white,
                         size: 18,

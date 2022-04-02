@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foodapplication/src/helpers/shared_prefrences_helper.dart';
 import 'package:foodapplication/src/models/cart_item.dart';
 import 'package:foodapplication/src/models/order.dart';
 
@@ -20,10 +21,11 @@ class OrderServices {
       convertedCart.add(item.toMap());
       restaurantIds.add(item.restaurantId);
     }
-
-    _firestore.collection(collection).doc(id).set({
+    DocumentReference ref = _firestore.collection(collection).doc();
+    var tid = ref.id;
+    ref.set({
       "userId": userId,
-      "id": id,
+      "id": tid,
       "restaurantIds": restaurantIds,
       "cart": convertedCart,
       "total": totalPrice,
@@ -33,15 +35,31 @@ class OrderServices {
     });
   }
 
-  Future<List<OrderModel>> getUserOrders({String userId}) async => _firestore
-          .collection(collection)
-          .where("userId", isEqualTo: userId)
-          .get()
-          .then((result) {
-        List<OrderModel> orders = [];
-        for (DocumentSnapshot order in result.docs) {
-          orders.add(OrderModel.fromSnapshot(order));
-        }
-        return orders;
+  Future<List<OrderModel>> getUserOrders({String userId}) async {
+    print(SharedPrefrencesHelper.sharedPrefrencesHelper.getData("token"));
+    List<OrderModel> dd = [];
+    QuerySnapshot query = await _firestore.collection("orders").where(
+        "userId", isEqualTo: SharedPrefrencesHelper.sharedPrefrencesHelper.getData("token")).get();
+
+    if (query.docs.isNotEmpty) {
+      query.docs.forEach((element) {
+        dd.add(OrderModel.fromSnapshot(element.data()));
+        print("gfh ${dd[0].total}");
       });
+    }
+
+    return dd;
+
+  }
+  // _firestore
+  //         .collection(collection)
+  //         .where("userId", isEqualTo: userId)
+  //         .get()
+  //         .then((result) {
+  //       List<OrderModel> orders = [];
+  //       for (DocumentSnapshot order in result.docs) {
+  //         orders.add(OrderModel.fromSnapshot(order));
+  //       }
+  //       return orders;
+  //     });
 }

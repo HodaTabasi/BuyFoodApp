@@ -23,7 +23,7 @@ class UserModel {
   String get stripeId => _stripeId;
 
 //  public variable
-  List<CartItemModel> cart;
+  List<CartItemModel> cart = [];
   int totalCartPrice;
 
   UserModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) {

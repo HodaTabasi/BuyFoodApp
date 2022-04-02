@@ -32,6 +32,7 @@ class CategoryWidget extends StatelessWidget {
                     Center(
                       child: FadeInImage.memoryNetwork(
                           placeholder: kTransparentImage,
+                          fit: BoxFit.fill,
                           image: category.image),
                     )
                   ],
@@ -65,8 +66,8 @@ class CategoryWidget extends StatelessWidget {
                   child: CustomText(
                     text: category.name,
                     color: white,
-                    size: 26,
-                    weight: FontWeight.w300,
+                    size: 18,
+                    weight: FontWeight.w800,
                   )))
         ],
       ),

@@ -5,20 +5,20 @@ class CategoryModel {
   static const NAME = "name";
   static const IMAGE = "image";
 
-  int _id;
+  String _id;
   String _name;
   String _image;
 
   //  getters
-  int get id => _id;
+  String get id => _id;
 
   String get name => _name;
 
   String get image => _image;
 
-  CategoryModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) {
-    _id = snapshot.data()['ID'];
-    _name = snapshot.data()['NAME'];
-    _image = snapshot.data()['IMAGE'];
+  CategoryModel.fromSnapshot(dynamic snapshot) {
+    _id = snapshot['id'];
+    _name = snapshot['name'];
+    _image = snapshot['image'];
   }
 }

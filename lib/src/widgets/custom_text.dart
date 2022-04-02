@@ -15,6 +15,7 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.center,
       style: TextStyle(
           fontSize: size ?? 16,
           color: color ?? black,

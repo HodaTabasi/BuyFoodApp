@@ -15,7 +15,7 @@ class RestaurantModel {
   String _image;
   List<String> _userLikes;
   double _rating;
-  double _avgPrice;
+  var _avgPrice;
   bool _popular;
   int _rates;
 
@@ -28,7 +28,7 @@ class RestaurantModel {
 
   List<String> get userLikes => _userLikes;
 
-  double get avgPrice => _avgPrice;
+  get avgPrice => _avgPrice;
 
   double get rating => _rating;
 
@@ -39,13 +39,13 @@ class RestaurantModel {
   // public variable
   bool liked = false;
 
-  RestaurantModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) {
-    _id = snapshot.data()['ID'];
-    _name = snapshot.data()['NAME'];
-    _image = snapshot.data()['IMAGE'];
-    _avgPrice = snapshot.data()['AVG_PRICE'];
-    _rating = snapshot.data()['RATING'];
-    _popular = snapshot.data()['POPULAR'];
-    _rates = snapshot.data()['RATES'];
+  RestaurantModel.fromSnapshot(dynamic snapshot) {
+    _id = snapshot['id'];
+    _name = snapshot['name'];
+    _image = snapshot['image'];
+    _avgPrice = snapshot['avgPrice'];
+    _rating = snapshot['rating'];
+    _popular = snapshot['popular'];
+    _rates = snapshot['rates'];
   }
 }

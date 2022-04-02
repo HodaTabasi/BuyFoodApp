@@ -13,11 +13,11 @@ class CartItemModel {
   String _id;
   String _name;
   String _image;
-  String _productId;
+  var _productId;
   String _restaurantId;
-  int _totalRestaurantSale;
-  int _quantity;
-  int _price;
+  var _totalRestaurantSale;
+  var _quantity;
+  var _price;
 
   //  getters
   String get id => _id;
@@ -26,15 +26,15 @@ class CartItemModel {
 
   String get image => _image;
 
-  String get productId => _productId;
+  get productId => _productId;
 
   String get restaurantId => _restaurantId;
 
-  int get price => _price;
+   get price => _price;
 
-  int get totalRestaurantSale => _totalRestaurantSale;
+   get totalRestaurantSale => _totalRestaurantSale;
 
-  int get quantity => _quantity;
+   get quantity => _quantity;
 
   CartItemModel.fromMap(Map data) {
     _id = data[ID];
@@ -46,6 +46,7 @@ class CartItemModel {
     _totalRestaurantSale = data[TOTAL_RESTAURANT_SALES];
     _restaurantId = data[RESTAURANT_ID];
   }
+
 
   Map toMap() => {
         ID: _id,

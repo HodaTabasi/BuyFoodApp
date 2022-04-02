@@ -5,22 +5,37 @@ class RestaurantServices {
   String collection = "restaurants";
  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<RestaurantModel>> getRestaurants() async =>
-      _firestore.collection(collection).doc().get().then((result) {
-        List<RestaurantModel> restaurants = [];
-        for (DocumentSnapshot restaurant in result.get(collection)) {
-          restaurants.add(RestaurantModel.fromSnapshot(restaurant));
-        }
-        return restaurants;
-      });
+  Future<List<RestaurantModel>> getRestaurants() async {
+    List<RestaurantModel> dd =[];
+    QuerySnapshot query = await _firestore.collection(collection).get();
 
-  Future<RestaurantModel> getRestaurantById({String id}) => _firestore
-          .collection(collection)
-          .doc(id.toString())
-          .get()
-          .then((doc) {
-        return RestaurantModel.fromSnapshot(doc);
+    if(query.docs.isNotEmpty){
+      query.docs.forEach((element) {
+        dd.add(RestaurantModel.fromSnapshot(element.data()));
+        print("gfhxcs ${dd[0].name}");
       });
+    }
+
+    return dd;
+    //_firestore.collection(collection).doc().get().then((result) {
+      //   List<RestaurantModel> restaurants = [];
+      //   for (DocumentSnapshot restaurant in result.get(collection)) {
+      //     restaurants.add(RestaurantModel.fromSnapshot(restaurant));
+      //   }
+      //   return restaurants;
+      // });
+  }
+
+  Future<RestaurantModel> getRestaurantById({String id}){
+    print(id);
+    _firestore
+        .collection(collection)
+        .doc(id.toString())
+        .get()
+        .then((doc) {
+      return RestaurantModel.fromSnapshot(doc);
+    });
+  }
 
   Future<List<RestaurantModel>> searchRestaurant({String restaurantName}) {
     // code to convert the first character to uppercase

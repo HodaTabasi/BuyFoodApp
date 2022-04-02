@@ -22,6 +22,7 @@ class ProductWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 10),
       child: Container(
+        margin: EdgeInsets.all(8),
         height: 110,
         decoration: BoxDecoration(
             color: white,
@@ -56,11 +57,17 @@ class ProductWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
-                          text: product.name,
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              product.name ?? "id null",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: black,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          )),
                       Padding(
                         padding: EdgeInsets.all(8),
                         child: Container(
@@ -165,7 +172,7 @@ class ProductWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: CustomText(
-                          text: "\$${product.price / 100}",
+                          text: "${int.parse(product.price) / 100} OMR",
                           weight: FontWeight.bold,
                         ),
                       ),

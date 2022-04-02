@@ -14,7 +14,7 @@ class ProductModel {
   static const RATES = "rates";
   static const USER_LIKES = "userLikes";
 
-  String _id;
+  var _id;
   String _name;
   String _restaurantId;
   String _restaurant;
@@ -22,13 +22,13 @@ class ProductModel {
   String _image;
   String _description;
 
-  double _rating;
-  int _price;
-  int _rates;
+  var _rating;
+  var _price;
+  var _rates;
 
   bool _featured;
 
-  String get id => _id;
+  get id => _id;
 
   String get name => _name;
 
@@ -42,29 +42,29 @@ class ProductModel {
 
   String get image => _image;
 
-  double get rating => _rating;
+  get rating => _rating;
 
-  int get price => _price;
+  get price => _price;
 
   bool get featured => _featured;
 
-  int get rates => _rates;
+  get rates => _rates;
 
   // public variable
   bool liked = false;
 
-  ProductModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) {
-    _id = snapshot.data()['ID'];
-    _image = snapshot.data()['IMAGE'];
-    _restaurant = snapshot.data()['RESTAURANT'];
-    _restaurantId = snapshot.data()['RESTAURANT_ID'].toString();
-    _description = snapshot.data()['DESCRIPTION'];
-    _id = snapshot.data()['ID'];
-    _featured = snapshot.data()['FEATURED'];
-    _price = snapshot.data()['PRICE'].floor();
-    _category = snapshot.data()['CATEGORY'];
-    _rating = snapshot.data()['RATING'];
-    _rates = snapshot.data()['RATES'];
-    _name = snapshot.data()['NAME'];
+  ProductModel.fromSnapshot(dynamic snapshot) {
+    _id = snapshot[ID];
+    _image = snapshot[IMAGE];
+    _restaurant = snapshot[RESTAURANT];
+    _restaurantId = snapshot[RESTAURANT_ID];
+    _description = snapshot[DESCRIPTION];
+    // _id = snapshot.data()['ID'];
+    // _featured = snapshot.data()['FEATURED'];
+    _price = snapshot[PRICE];
+    _category = snapshot[CATEGORY];
+    _rating = snapshot[RATING];
+    _rates = snapshot[RATES];
+    _name = snapshot[NAME];
   }
 }

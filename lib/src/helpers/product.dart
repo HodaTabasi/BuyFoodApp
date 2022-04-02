@@ -6,14 +6,28 @@ class ProductServices {
   
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<ProductModel>> getProducts() async =>
-      _firestore.collection(collection).doc().get().then((result) {
-        List<ProductModel> products = [];
-        for (DocumentSnapshot product in result.get(collection)) {
-          products.add(ProductModel.fromSnapshot(product));
-        }
-        return products;
+  Future<List<ProductModel>> getProducts() async {
+    List<ProductModel> dd =[];
+    QuerySnapshot query = await _firestore.collection(collection).get();
+
+    if(query.docs.isNotEmpty){
+      query.docs.forEach((element) {
+        dd.add(ProductModel.fromSnapshot(element.data()));
+        print("gfhsf ${dd[0].name}");
       });
+    }
+
+    return dd;
+
+    // _firestore.collection(collection).doc().get().then((result) {
+    //   List<ProductModel> products = [];
+    //   for (DocumentSnapshot product in result.get(collection)) {
+    //     products.add(ProductModel.fromSnapshot(product));
+    //   }
+    //   return products;
+    // });
+  }
+
 
   void likeOrDislikeProduct({String id, List<String> userLikes}) {
     _firestore

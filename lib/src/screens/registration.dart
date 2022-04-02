@@ -109,13 +109,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     padding: const EdgeInsets.all(10),
                     child: GestureDetector(
                       onTap: () async {
-                        print("BTN CLICKED!!!!");
-                        print("BTN CLICKED!!!!");
-                        print("BTN CLICKED!!!!");
-                        print("BTN CLICKED!!!!");
-                        print("BTN CLICKED!!!!");
-                        print("BTN CLICKED!!!!");
-
                         if (!await authProvider.signUp()) {
                           _key.currentState.showSnackBar(
                               SnackBar(content: Text("Resgistration failed!")));

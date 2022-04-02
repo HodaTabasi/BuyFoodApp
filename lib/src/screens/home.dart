@@ -18,6 +18,7 @@ import 'package:foodapplication/src/widgets/loading.dart';
 import 'package:foodapplication/src/widgets/restaurant.dart';
 import 'package:provider/provider.dart';
 
+import '../helpers/shared_prefrences_helper.dart';
 import 'cart.dart';
 import 'category.dart';
 import 'login.dart';
@@ -31,19 +32,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   body: Container(),
+    // );
     final user = Provider.of<UserProvider>(context);
     final app = Provider.of<AppProvider>(context);
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
-    restaurantProvider.loadSingleRestaurant();
+    // restaurantProvider.loadSingleRestaurant(retaurantId:"1");
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: white),
         elevation: 0.5,
         backgroundColor: primary,
         title: CustomText(
-          text: "FoodApp",
+          text: "BUC CANTEEN",
           color: white,
         ),
         actions: <Widget>[
@@ -63,16 +67,20 @@ class _HomeState extends State<Home> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("images/splach.jpeg"),
+              ),
               decoration: BoxDecoration(color: primary),
               accountName: CustomText(
-                text: user.userModel?.name ?? "username lading...",
+                text:  SharedPrefrencesHelper.sharedPrefrencesHelper.getData("name") ?? "username lading...",
                 color: white,
                 weight: FontWeight.bold,
                 size: 18,
               ),
               accountEmail: CustomText(
-                text: user.userModel?.email ?? "email loading...",
+                text: SharedPrefrencesHelper.sharedPrefrencesHelper.getData("email") ?? "email loading...",
                 color: white,
+                size: 16,
               ),
             ),
             ListTile(
@@ -210,7 +218,7 @@ class _HomeState extends State<Home> {
 //                              app.changeLoading();
                               await productProvider.loadProductsByCategory(
                                   categoryName:
-                                      categoryProvider.categories[index].name);
+                                  categoryProvider.categories[index].name);
 
                               changeScreen(
                                   context,
